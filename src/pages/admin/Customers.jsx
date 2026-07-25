@@ -8,8 +8,23 @@ function Customers() {
     { id: 'CUST002', name: 'Aadarsh Patil', email: 'aadarsh@example.com', phone: '9876543211', status: 'Active', joined: '2023-02-20' },
   ]);
 
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [customerToDelete, setCustomerToDelete] = useState(null);
+  const [currentCustomer, setCurrentCustomer] = useState(null);
+
+  const handleAddSubmit = (e) => {
+    e.preventDefault();
+    setShowAddModal(false);
+    toast.success('Customer added successfully!');
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    setShowEditModal(false);
+    toast.success('Customer updated successfully!');
+  };
 
   const handleDeleteClick = (id) => {
     setCustomerToDelete(id);
@@ -26,7 +41,7 @@ function Customers() {
     <div className="page-wrapper">
       <div className="section-header flex-between">
         <h2>Customers</h2>
-        <button className="btn btn-primary">+ Add Customer</button>
+        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ Add Customer</button>
       </div>
 
       <div className="toolbar">
@@ -70,7 +85,7 @@ function Customers() {
                   <td>{customer.joined}</td>
                   <td>
                     <button className="btn-icon"><FiEye /></button>
-                    <button className="btn-icon"><FiEdit2 /></button>
+                    <button className="btn-icon" onClick={() => { setCurrentCustomer(customer); setShowEditModal(true); }}><FiEdit2 /></button>
                     <button className="btn-icon" onClick={() => handleDeleteClick(customer.id)}><FiTrash2 /></button>
                   </td>
                 </tr>
@@ -101,6 +116,58 @@ function Customers() {
               <button className="btn btn-outline" onClick={() => setShowDeleteModal(false)}>Cancel</button>
               <button className="btn btn-danger" onClick={confirmDelete}>Delete</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showAddModal && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '500px' }}>
+            <h3>Add New Customer</h3>
+            <form onSubmit={handleAddSubmit} style={{ textAlign: 'left', marginTop: '20px' }}>
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input type="text" className="form-control" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input type="email" className="form-control" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Phone</label>
+                <input type="text" className="form-control" required />
+              </div>
+              <div className="modal-actions" style={{ marginTop: '24px' }}>
+                <button type="button" className="btn btn-outline" onClick={() => setShowAddModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save Customer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showEditModal && currentCustomer && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '500px' }}>
+            <h3>Edit Customer</h3>
+            <form onSubmit={handleEditSubmit} style={{ textAlign: 'left', marginTop: '20px' }}>
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input type="text" className="form-control" defaultValue={currentCustomer.name} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input type="email" className="form-control" defaultValue={currentCustomer.email} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Phone</label>
+                <input type="text" className="form-control" defaultValue={currentCustomer.phone} required />
+              </div>
+              <div className="modal-actions" style={{ marginTop: '24px' }}>
+                <button type="button" className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Update Customer</button>
+              </div>
+            </form>
           </div>
         </div>
       )}

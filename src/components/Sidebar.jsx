@@ -60,7 +60,7 @@ function Sidebar({ isOpen }) {
     <>
       <div className={`sidebar ${!isOpen ? 'collapsed' : ''}`}>
         <div className="sidebar-brand">
-          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>🏦 FINIX BANKING</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>🏦 E-BANKING</span>
         </div>
         <ul className="sidebar-menu">
           {currentMenu.map((item, index) => (

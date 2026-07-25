@@ -40,7 +40,7 @@ function Login() {
     <div className="login-page">
       <div className="login-left">
         <div style={{ fontSize: '64px', marginBottom: '20px' }}>🏦</div>
-        <div className="login-brand">FINIX BANKING</div>
+        <div className="login-brand">E-BANKING</div>
         <div className="login-tagline">Secure Banking for Better Tomorrow</div>
       </div>
       <div className="login-right">
