@@ -18,6 +18,8 @@ function KycRequests() {
   const [showModal, setShowModal] = useState(false);
   const [modalAction, setModalAction] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedViewRequest, setSelectedViewRequest] = useState(null);
 
   const getStatusBadge = (status) => {
     switch(status) {
@@ -86,7 +88,7 @@ function KycRequests() {
                   <td>{req.date}</td>
                   <td><span className={getStatusBadge(req.status)}>{req.status}</span></td>
                   <td>
-                    <button className="btn btn-sm btn-outline mr-2">View Details</button>
+                    <button className="btn btn-sm btn-outline mr-2" onClick={() => { setSelectedViewRequest(req); setShowViewModal(true); }} style={{ marginRight: '8px' }}>View Details</button>
                     {req.status === 'Pending' && (
                       <>
                         <button className="btn btn-sm btn-success mr-2" onClick={() => handleActionClick(req.id, 'approve')}>Approve</button>
@@ -121,6 +123,41 @@ function KycRequests() {
             <div className="modal-actions">
               <button className="btn btn-outline" onClick={() => setShowModal(false)}>Cancel</button>
               <button className={`btn ${modalAction === 'approve' ? 'btn-success' : 'btn-danger'}`} onClick={confirmAction}>Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showViewModal && selectedViewRequest && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '600px', textAlign: 'left' }}>
+            <h3 style={{ marginBottom: '20px' }}>KYC Document Details</h3>
+            <div className="info-grid" style={{ marginBottom: '20px' }}>
+              <div className="info-item">
+                <label>Customer Name</label>
+                <p>{selectedViewRequest.name}</p>
+              </div>
+              <div className="info-item">
+                <label>Document Type</label>
+                <p>{selectedViewRequest.docType}</p>
+              </div>
+              <div className="info-item">
+                <label>Submitted Date</label>
+                <p>{selectedViewRequest.date}</p>
+              </div>
+              <div className="info-item">
+                <label>Current Status</label>
+                <p><span className={getStatusBadge(selectedViewRequest.status)}>{selectedViewRequest.status}</span></p>
+              </div>
+            </div>
+            
+            <div style={{ padding: '20px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center', marginBottom: '20px', border: '1px dashed #ccc' }}>
+              <FiAlertCircle size={48} color="#ccc" style={{ marginBottom: '10px' }} />
+              <p style={{ color: '#6c757d', margin: 0 }}>Document Image Preview Placeholder</p>
+            </div>
+
+            <div className="modal-actions">
+              <button className="btn btn-outline" onClick={() => setShowViewModal(false)}>Close</button>
             </div>
           </div>
         </div>

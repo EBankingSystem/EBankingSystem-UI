@@ -9,7 +9,7 @@ function LandingPage() {
       <nav style={{ padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ fontSize: '32px' }}>🏦</div>
-          <h1 style={{ margin: 0, fontSize: '24px', color: '#0a1929', fontWeight: 800 }}>FINIX BANKING</h1>
+          <h1 style={{ margin: 0, fontSize: '24px', color: '#0a1929', fontWeight: 800 }}>E-BANKING</h1>
         </div>
         <div style={{ display: 'flex', gap: '16px' }}>
           <Link to="/login" className="btn btn-outline">Login</Link>

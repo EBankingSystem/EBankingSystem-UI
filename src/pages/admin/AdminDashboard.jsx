@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiUsers, FiCreditCard, FiFileText, FiTrendingUp } from 'react-icons/fi';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function AdminDashboard() {
+  const navigate = useNavigate();
   const lineData = [
     { name: 'Jan', value: 800 },
     { name: 'Feb', value: 920 },
@@ -140,7 +141,7 @@ function AdminDashboard() {
                     <td>{req.customer}</td>
                     <td>{req.date}</td>
                     <td><span className={getStatusBadge(req.status)}>{req.status}</span></td>
-                    <td><button className="btn btn-sm btn-primary">Review</button></td>
+                    <td><button className="btn btn-sm btn-primary" onClick={() => navigate('/admin/kyc-requests')}>Review</button></td>
                   </tr>
                 ))}
               </tbody>

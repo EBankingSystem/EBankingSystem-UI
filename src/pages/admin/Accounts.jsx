@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiSearch, FiEye, FiEdit2, FiLock, FiUnlock } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 function Accounts() {
   const accounts = [
@@ -10,8 +11,23 @@ function Accounts() {
     { id: 'ACC-20240005', name: 'Abhishek Patil', type: 'Savings', balance: 85000, status: 'Active', opened: '2026-05-12' },
     { id: 'ACC-20240006', name: 'Vaibhav Patil', type: 'Current', balance: 250000, status: 'Frozen', opened: '2026-06-18' },
     { id: 'ACC-20240007', name: 'Suyash Wagh', type: 'Savings', balance: 12000, status: 'Active', opened: '2026-07-22' },
-    { id: 'ACC-20240008', name: 'Digvijay Benake', type: 'Fixed Deposit', balance: 1000000, status: 'Active', opened: '2026-07-30' },
   ];
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState(null);
+
+  const handleAddSubmit = (e) => {
+    e.preventDefault();
+    setShowAddModal(false);
+    toast.success('Account created successfully!');
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    setShowEditModal(false);
+    toast.success('Account updated successfully!');
+  };
 
   const getStatusBadge = (status) => {
     switch(status) {
@@ -26,7 +42,7 @@ function Accounts() {
     <div className="page-wrapper">
       <div className="section-header flex-between">
         <h2>Accounts</h2>
-        <button className="btn btn-primary">+ New Account</button>
+        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ New Account</button>
       </div>
 
       <div className="toolbar">
@@ -67,8 +83,8 @@ function Accounts() {
                   <td>{acc.opened}</td>
                   <td>
                     <button className="btn-icon"><FiEye /></button>
-                    <button className="btn-icon"><FiEdit2 /></button>
-                    <button className="btn-icon">
+                    <button className="btn-icon" onClick={() => { setCurrentAccount(acc); setShowEditModal(true); }}><FiEdit2 /></button>
+                    <button className="btn-icon" onClick={() => toast.info(`Account status toggled for ${acc.id}`)}>
                       {acc.status === 'Frozen' ? <FiUnlock /> : <FiLock />}
                     </button>
                   </td>
@@ -89,6 +105,66 @@ function Accounts() {
           </div>
         </div>
       </div>
+
+      {showAddModal && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '500px' }}>
+            <h3>Create New Account</h3>
+            <form onSubmit={handleAddSubmit} style={{ textAlign: 'left', marginTop: '20px' }}>
+              <div className="form-group">
+                <label className="form-label">Customer ID / Name</label>
+                <input type="text" className="form-control" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Account Type</label>
+                <select className="form-control" required>
+                  <option>Savings</option>
+                  <option>Current</option>
+                  <option>Fixed Deposit</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Initial Deposit (₹)</label>
+                <input type="number" className="form-control" required />
+              </div>
+              <div className="modal-actions" style={{ marginTop: '24px' }}>
+                <button type="button" className="btn btn-outline" onClick={() => setShowAddModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Create Account</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showEditModal && currentAccount && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '500px' }}>
+            <h3>Edit Account: {currentAccount.id}</h3>
+            <form onSubmit={handleEditSubmit} style={{ textAlign: 'left', marginTop: '20px' }}>
+              <div className="form-group">
+                <label className="form-label">Account Type</label>
+                <select className="form-control" defaultValue={currentAccount.type} required>
+                  <option>Savings</option>
+                  <option>Current</option>
+                  <option>Fixed Deposit</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Status</label>
+                <select className="form-control" defaultValue={currentAccount.status} required>
+                  <option>Active</option>
+                  <option>Dormant</option>
+                  <option>Frozen</option>
+                </select>
+              </div>
+              <div className="modal-actions" style={{ marginTop: '24px' }}>
+                <button type="button" className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
